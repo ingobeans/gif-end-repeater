@@ -1,27 +1,20 @@
 import imageio, argparse
 
-keys = {
-    ("input","i"),
-    ("output","o"),
-    ("repeat-n","n"),
-    ("count","c"),
-}
+keys = [
+    ("input","i","path","specifies the input file path",True),
+    ("output","o","str","output file path",True),
+    ("repeat-n","n","int","the n last frames that are repeated",True),
+    ("count","c","int","the amount the repeat section is repeated",True),
+]
 
 help_text = """
 # gif-end-repeater.py
 
 Usage: gif-end-repeater.py <flags>
-Flags:
-    --input <PATH> (-i): specifies the input file path
-    --output <PATH> (-o): output file path
-    --repeat-n <INT> (-n): the n last frames that are repeated
-    --count <INT> (-c): the amount the repeat section is repeated
-
-
+Args:
 """.strip()
 
 args = argparse.get_args(keys,help_text)
-print(args)
 
 input_gif_path = args["input"]
 output_gif_path = args["output"]
@@ -29,8 +22,8 @@ output_gif_path = args["output"]
 frames = []
 durations = []
 
-repeat_frames_n = int(args["repeat-n"])
-repeat_count = int(args["count"])
+repeat_frames_n = args["repeat-n"]
+repeat_count = args["count"]
 
 def write_frame(reader,index):
     global durations,frames
