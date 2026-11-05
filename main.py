@@ -1,12 +1,36 @@
-import imageio
+import imageio, argparse
 
-input_gif_path = "input.gif"
+keys = {
+    ("input","i"),
+    ("output","o"),
+    ("repeat-n","n"),
+    ("count","c"),
+}
+
+help_text = """
+# gif-end-repeater.py
+
+Usage: gif-end-repeater.py <flags>
+Flags:
+    --input <PATH> (-i): specifies the input file path
+    --output <PATH> (-o): output file path
+    --repeat-n <INT> (-n): the n last frames that are repeated
+    --count <INT> (-c): the amount the repeat section is repeated
+
+
+""".strip()
+
+args = argparse.get_args(keys,help_text)
+print(args)
+
+input_gif_path = args["input"]
+output_gif_path = args["output"]
 
 frames = []
 durations = []
 
-repeat_frames_n = 6
-repeat_count = 10
+repeat_frames_n = int(args["repeat-n"])
+repeat_count = int(args["count"])
 
 def write_frame(reader,index):
     global durations,frames
@@ -30,5 +54,5 @@ with imageio.get_reader(input_gif_path) as reader:
             write_frame(reader, index)
 
 
-imageio.mimsave("output.gif", frames, "gif", duration=durations)
+imageio.mimsave(output_gif_path, frames, "gif", duration=durations)
 print(f"Wrote {len(frames)} frames!")
